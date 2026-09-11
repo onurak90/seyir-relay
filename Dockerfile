@@ -1,14 +1,12 @@
-FROM node:20-bullseye-slim
+FROM node:20-alpine
 
-# FFmpeg ve gerekli kütüphaneleri yükle
-RUN apt-get update && \
-    apt-get install -y ffmpeg && \
-    rm -rf /var/lib/apt/lists/*
+# Alpine paket yöneticisi ile FFmpeg'i hatasız ve hızlıca kuruyoruz
+RUN apk add --no-cache ffmpeg
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --production
+RUN npm install --omit=dev
 
 COPY . .
 
